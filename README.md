@@ -11,6 +11,7 @@ A feature-rich ping utility with support for multiple targets, statistics, and v
 - DNS resolution display
 - Quiet mode
 - Custom timeout settings
+- GUI interface with GTK for real-time output display
 
 ## Building from Source
 
@@ -19,12 +20,12 @@ A feature-rich ping utility with support for multiple targets, statistics, and v
 1. Install required dependencies:
 ```bash
 sudo apt-get update
-sudo apt-get install gcc make libc6-dev
+sudo apt-get install gcc make libc6-dev libgtk-3-dev
 ```
 
 2. Compile the program:
 ```bash
-gcc fping.c -o fping -lm
+gcc fping.c -o fping -lm `pkg-config --cflags --libs gtk+-3.0`
 ```
 
 3. Install the man page:
@@ -67,6 +68,9 @@ sudo ./fping -q -s 100 google.com
 
 # Show DNS resolution with custom timeout
 sudo ./fping -d -t 2000 google.com
+
+# Run with GUI
+sudo ./fping_gui
 ```
 
 ### Windows
@@ -107,6 +111,7 @@ man ./fping.1
 - GCC compiler
 - Root privileges for raw sockets
 - Math library (libm)
+- GTK+ 3 development libraries (libgtk-3-dev)
 
 ### Windows
 - MinGW or Cygwin
@@ -125,3 +130,7 @@ man ./fping.1
 3. Man page not found:
    - Run `sudo mandb` after installation
    - Check if man page is in correct directory
+
+4. GUI does not display:
+   - Ensure GTK+ 3 is installed using `sudo apt-get install libgtk-3-dev`
+   - Compile with GTK flags: `gcc fping.c -o fping -lm `pkg-config --cflags --libs gtk+-3.0``
