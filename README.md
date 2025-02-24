@@ -1,136 +1,133 @@
-# Enhanced Ping Utility
+# Enhanced Network Ping Tool
 
-A feature-rich ping utility with support for multiple targets, statistics, and various display options.
+A feature-rich network ping utility with GTK-based graphical interface, supporting multiple targets and advanced configuration options.
 
 ## Features
 
-- Multiple target support
-- Configurable packet sizes
-- Detailed statistics (packet loss, RTT, jitter)
-- Verbose mode with header information
-- DNS resolution display
-- Quiet mode
-- Custom timeout settings
-- GUI interface with GTK for real-time output display
+### Core Functionality
+- Multiple simultaneous ping targets
+- Configurable packet sizes (32-65527 bytes)
+- Adjustable ping intervals (100-5000ms)
+- Customizable timeout settings
+- Continuous or single-shot ping modes
 
-## Building from Source
+### Display Options
+- Real-time ping results
+- Timestamp display
+- DNS resolution
+- TTL (Time To Live) values
+- Dark theme interface
+- Auto-scrolling output
 
-### Linux
-
-1. Install required dependencies:
-```bash
-sudo apt-get update
-sudo apt-get install gcc make libc6-dev libgtk-3-dev
-```
-
-2. Compile the program:
-```bash
-gcc fping.c -o fping -lm `pkg-config --cflags --libs gtk+-3.0`
-```
-
-3. Install the man page:
-```bash
-sudo mkdir -p /usr/local/share/man/man1
-sudo cp fping.1 /usr/local/share/man/man1/
-sudo mandb
-```
-
-### Windows
-
-1. Install MinGW or Cygwin:
-   - MinGW: Download and install from [MinGW website](https://www.mingw-w64.org/)
-   - Cygwin: Download and install from [Cygwin website](https://www.cygwin.com/)
-
-2. Using MinGW:
-```batch
-gcc fping.c -o fping.exe -lws2_32 -lm
-```
-
-3. Using Cygwin:
-```bash
-gcc fping.c -o fping.exe -lm
-```
-
-Note: The man page is not typically used on Windows systems.
-
-## Usage
-
-### Linux
-```bash
-# Basic usage
-sudo ./fping google.com
-
-# Multiple targets with verbose output
-sudo ./fping -v google.com facebook.com
-
-# Quiet mode with custom packet size
-sudo ./fping -q -s 100 google.com
-
-# Show DNS resolution with custom timeout
-sudo ./fping -d -t 2000 google.com
-
-# Run with GUI
-sudo ./fping_gui
-```
-
-### Windows
-```batch
-# Run as Administrator
-fping.exe google.com
-
-# Multiple targets
-fping.exe -v google.com facebook.com
-```
-
-## Command Line Options
-
-- `-v`: Verbose output
-- `-q`: Quiet output (statistics only)
-- `-d`: Show DNS resolution
-- `-s size`: Set packet size (8-65527 bytes)
-- `-t ms`: Set timeout (100-60000 ms)
-
-## Viewing the Manual
-
-### Linux
-```bash
-# After installation
-man fping
-
-# Direct from file
-man ./fping.1
-```
-
-### Windows
-- The manual content can be viewed in the source file `fping.1`
-- Or access this README for quick reference
+### Statistics
+- Packets sent/received
+- Round-trip time (RTT)
+- Packet loss calculation
+- Minimum/Maximum/Average RTT
+- Jitter calculations
 
 ## Requirements
 
 ### Linux
+- GTK+ 3.0 or later
 - GCC compiler
-- Root privileges for raw sockets
-- Math library (libm)
-- GTK+ 3 development libraries (libgtk-3-dev)
+- Root privileges (for raw sockets)
+- pthread library
+- Required development packages:
+  ```bash
+  # Ubuntu/Debian
+  sudo apt-get install build-essential libgtk-3-dev
 
-### Windows
-- MinGW or Cygwin
-- Administrator privileges
-- WinSock2 library (ws2_32)
+  # Fedora
+  sudo dnf install gcc gtk3-devel
 
-## Common Issues
+  # Arch Linux
+  sudo pacman -S gcc gtk3
+  ```
+
+## Building
+
+1. Clone the repository:
+```bash
+git clone https://github.com/Okalmary254/enhanced-ping.git
+cd enhanced-ping
+```
+
+2. Compile the program:
+```bash
+gcc fping.c -o fping -lm `pkg-config --cflags --libs gtk+-3.0` -pthread
+```
+
+## Usage
+
+1. Launch the program with root privileges:
+```bash
+sudo ./fping
+```
+
+2. Using the Interface:
+   - Enter hostname or IP in the input field
+   - Click "Add Host" or press Enter to add target
+   - Configure ping options in the settings panel
+   - Click "Start Ping" to begin
+   - Use "Stop Ping" to halt operations
+   - "Clear Results" removes all output
+
+### Configuration Options
+
+- **Packet Size**: Set the size of ping packets (32-65527 bytes)
+- **Interval**: Time between pings (100-5000ms)
+- **Timeout**: Maximum wait time for responses
+- **Continuous Ping**: Toggle between continuous and single-shot modes
+- **Show Timestamp**: Display time for each ping
+- **Resolve DNS**: Show hostnames instead of IP addresses
+
+## Troubleshooting
+
+### Common Issues
 
 1. "Operation not permitted":
-   - Run with sudo/administrator privileges
+   - Run the program with sudo
+   - Check user permissions
 
-2. Compilation errors:
-   - Ensure all required libraries are installed
-   - Check if math library is linked (-lm)
+2. "Address already in use":
+   - Wait a few moments and try again
+   - Check for other ping processes
 
-3. Man page not found:
-   - Run `sudo mandb` after installation
-   - Check if man page is in correct directory
+3. GUI not appearing:
+   - Verify GTK3 installation
+   - Check X server connection
 
-4. GUI does not display:
-   - Ensure GTK+ 3 is installed using `sudo apt-get install libgtk-3-dev`
-   - Compile with GTK flags: `gcc fping.c -o fping -lm `pkg-config --cflags --libs gtk+-3.0``
+4. High CPU usage:
+   - Increase ping interval
+   - Reduce number of targets
+   - Disable continuous mode
+
+### Debug Tips
+
+1. Enable verbose output:
+   - Check "Show Timestamp" for detailed timing
+   - Monitor system logs for socket errors
+
+2. Performance optimization:
+   - Use appropriate intervals (>500ms recommended)
+   - Limit simultaneous targets (<5 recommended)
+   - Clear results periodically for long sessions
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- GTK+ Team for the GUI framework
+- Linux networking stack developers
+- Community contributors and testers
